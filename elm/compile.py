@@ -7,13 +7,13 @@ import sys
 PACKAGES_DIR = "elm-home/0.19.0/package"
 
 (
-    arg_compilation_mode,
+    # arg_compilation_mode,
     arg_elm_binary,
     arg_elm_json,
     arg_main,
     arg_out_js,
     arg_out_elmi,
-) = sys.argv[1:7]
+) = sys.argv[2:7]
 
 # Construct an ELM_HOME directory, containing symlinks to all the
 # packages we want to be available to the build.
@@ -64,10 +64,13 @@ for root, dirs, files in os.walk("elm-home"):
     os.chmod(root, 0o500)
 
 
-# Convert Bazel compilation mode to flags for 'elm make'.
-opt_flags = {"dbg": ["--debug"], "fastbuild": [], "opt": ["--optimize"]}[
-    arg_compilation_mode
-]
+# # Convert Bazel compilation mode to flags for 'elm make'.
+# opt_flags = {"dbg": ["--debug"], "fastbuild": [], "opt": ["--optimize"]}[
+#     arg_compilation_mode
+# ]
+
+# Always compile with `--optimize`
+opt_flags = ["--optimize"]
 
 # Invoke Elm build action.
 os.symlink(arg_elm_json, "elm.json")
